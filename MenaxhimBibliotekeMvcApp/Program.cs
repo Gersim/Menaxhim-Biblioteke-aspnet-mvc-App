@@ -1,4 +1,11 @@
+using MenaxhimBibliotekeMvcApp.Data;
+using Microsoft.EntityFrameworkCore;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//Configure DbContex
+builder.Services.AddDbContext<AppDbContex>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
