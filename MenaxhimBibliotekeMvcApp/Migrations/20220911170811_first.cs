@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MenaxhimBibliotekeMvcApp.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -45,19 +45,19 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Contracts",
+                name: "Clients",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Book = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Contracts", x => x.Id);
+                    table.PrimaryKey("PK_Clients", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,47 +85,30 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookContract",
+                name: "Contracts",
                 columns: table => new
                 {
-                    BooksId = table.Column<int>(type: "int", nullable: false),
-                    ContractsId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClientId = table.Column<int>(type: "int", nullable: false),
+                    BookId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookContract", x => new { x.BooksId, x.ContractsId });
+                    table.PrimaryKey("PK_Contracts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookContract_Books_BooksId",
-                        column: x => x.BooksId,
+                        name: "FK_Contracts_Books_BookId",
+                        column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookContract_Contracts_ContractsId",
-                        column: x => x.ContractsId,
-                        principalTable: "Contracts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ContractsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Clients_Contracts_ContractsId",
-                        column: x => x.ContractsId,
-                        principalTable: "Contracts",
+                        name: "FK_Contracts_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -136,14 +119,14 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookContract_ContractsId",
-                table: "BookContract",
-                column: "ContractsId");
+                name: "IX_Contracts_BookId",
+                table: "Contracts",
+                column: "BookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clients_ContractsId",
-                table: "Clients",
-                column: "ContractsId");
+                name: "IX_Contracts_ClientId",
+                table: "Contracts",
+                column: "ClientId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -152,10 +135,7 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
                 name: "Author_Book");
 
             migrationBuilder.DropTable(
-                name: "BookContract");
-
-            migrationBuilder.DropTable(
-                name: "Clients");
+                name: "Contracts");
 
             migrationBuilder.DropTable(
                 name: "Authors");
@@ -164,7 +144,7 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
                 name: "Books");
 
             migrationBuilder.DropTable(
-                name: "Contracts");
+                name: "Clients");
         }
     }
 }

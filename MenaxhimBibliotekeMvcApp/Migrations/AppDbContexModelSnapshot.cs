@@ -22,21 +22,6 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BookContract", b =>
-                {
-                    b.Property<int>("BooksId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContractsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BooksId", "ContractsId");
-
-                    b.HasIndex("ContractsId");
-
-                    b.ToTable("BookContract");
-                });
-
             modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Author", b =>
                 {
                     b.Property<int>("Id")
@@ -121,11 +106,11 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
 
             modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Client", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ContractsId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -145,8 +130,6 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContractsId");
-
                     b.ToTable("Clients");
                 });
 
@@ -158,9 +141,11 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Book")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -174,22 +159,11 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("ClientId");
+
                     b.ToTable("Contracts");
-                });
-
-            modelBuilder.Entity("BookContract", b =>
-                {
-                    b.HasOne("MenaxhimBibliotekeMvcApp.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("BooksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MenaxhimBibliotekeMvcApp.Models.Contract", null)
-                        .WithMany()
-                        .HasForeignKey("ContractsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Author_Book", b =>
@@ -211,15 +185,23 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Client", b =>
+            modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Contract", b =>
                 {
-                    b.HasOne("MenaxhimBibliotekeMvcApp.Models.Contract", "Contracts")
-                        .WithMany("Clients")
-                        .HasForeignKey("ContractsId")
+                    b.HasOne("MenaxhimBibliotekeMvcApp.Models.Book", "Books")
+                        .WithMany("Contracts")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Contracts");
+                    b.HasOne("MenaxhimBibliotekeMvcApp.Models.Client", "Clients")
+                        .WithMany("Contracts")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Books");
+
+                    b.Navigation("Clients");
                 });
 
             modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Author", b =>
@@ -230,11 +212,13 @@ namespace MenaxhimBibliotekeMvcApp.Migrations
             modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Book", b =>
                 {
                     b.Navigation("Author_Books");
+
+                    b.Navigation("Contracts");
                 });
 
-            modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Contract", b =>
+            modelBuilder.Entity("MenaxhimBibliotekeMvcApp.Models.Client", b =>
                 {
-                    b.Navigation("Clients");
+                    b.Navigation("Contracts");
                 });
 #pragma warning restore 612, 618
         }

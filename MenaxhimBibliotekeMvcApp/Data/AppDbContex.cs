@@ -22,6 +22,11 @@ namespace MenaxhimBibliotekeMvcApp.Data
             base.OnModelCreating(modelBuilder);
         }
 
+        internal void Wait()
+        {
+            throw new NotImplementedException();
+        }
+
         public DbSet<Author> Authors { get;set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Author_Book> Author_Book { get; set; }
