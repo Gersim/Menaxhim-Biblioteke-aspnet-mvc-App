@@ -48,7 +48,7 @@ namespace MenaxhimBibliotekeMvcApp.Data
                         {
                             Title = "Dy vjet Pushime",
                             Description = "Nje roman teper i bukur per femije",
-                            CoverImageUrl = "jsjsjdhsh",
+                            CoverImageUrl = "https://www.theceolibrary.com/wp-content/uploads/2017/10/Two-Years-Holiday-or-Adrift-in-the-Pacific-Jules-Verne.jpg",
                             BookZhanra = Enums.BookZhanra.Adventure,
                             BookNumbers = 5,
                             BookLocation = "A",
